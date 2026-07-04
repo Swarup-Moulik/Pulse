@@ -122,65 +122,78 @@ const EmployeeList = ({ user }) => {
           <h2 className="text-lg font-bold">Employee Directory</h2>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity cursor-pointer"
+            className="bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity cursor-pointer whitespace-nowrap"
           >
             + Add Employee
           </button>
         </div>
 
-        <table className="w-full text-sm">
-          <thead className="bg-secondary/50 text-muted-foreground text-left">
-            <tr>
-              <th className="p-4">Emp ID</th>
-              <th className="p-4">Name</th>
-              <th className="p-4">Email</th>
-              <th className="p-4">Designation</th>
-              <th className="p-4 text-center">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {employees.map((emp) => (
-              <tr
-                key={emp.id}
-                className="border-t border-border/50 hover:bg-secondary/20 transition-colors"
-              >
-                <td className="p-4 font-mono text-xs text-muted-foreground">
-                  {emp.employee_id || "N/A"}
-                </td>
-                <td className="p-4 font-medium">{emp.name}</td>
-                <td className="p-4 text-muted-foreground">{emp.email}</td>
-                <td className="p-4">
-                  {/* Dynamic Dropdown */}
-                  <select
-                    value={emp.designation || ""}
-                    onChange={(e) =>
-                      handleDesignationChange(emp.id, e.target.value)
-                    }
-                    className="bg-secondary border border-border rounded-md px-2 py-1 text-xs cursor-pointer focus:ring-1 focus:ring-primary"
-                  >
-                    <option value="" disabled>
-                      Unassigned
-                    </option>
-                    {DESIGNATIONS.map((d) => (
-                      <option key={d} value={d}>
-                        {d}
-                      </option>
-                    ))}
-                  </select>
-                </td>
-                <td className="p-4 flex justify-center gap-3">
-                  <button
-                    onClick={() => handleDelete(emp.id)}
-                    className="text-red-500 hover:text-red-700 p-1 cursor-pointer transition-colors"
-                    title="Delete"
-                  >
-                    <Trash2 size={18} />
-                  </button>
-                </td>
+        <div className="overflow-x-auto custom-scrollbar">
+          <table className="w-full text-sm min-w-[600px]">
+            <thead className="bg-secondary/50 text-muted-foreground text-left">
+              <tr>
+                <th className="p-4">Emp ID</th>
+                <th className="p-4">Name</th>
+                <th className="p-4">Email</th>
+                <th className="p-4">Designation</th>
+                <th className="p-4 text-center">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {employees.map((emp) => (
+                <tr
+                  key={emp.id}
+                  className="border-t border-border/50 hover:bg-secondary/20 transition-colors"
+                >
+                  <td className="p-4 font-mono text-xs text-muted-foreground">
+                    {emp.employee_id || "N/A"}
+                  </td>
+                  <td className="p-4 font-medium whitespace-nowrap">
+                    {emp.name}
+                  </td>
+                  <td className="p-4 text-muted-foreground">{emp.email}</td>
+                  <td className="p-4">
+                    <select
+                      value={emp.designation || ""}
+                      onChange={(e) =>
+                        handleDesignationChange(emp.id, e.target.value)
+                      }
+                      className="bg-secondary border border-border rounded-md px-2 py-1 text-xs cursor-pointer focus:ring-1 focus:ring-primary"
+                    >
+                      <option value="" disabled>
+                        Unassigned
+                      </option>
+                      {DESIGNATIONS.map((d) => (
+                        <option key={d} value={d}>
+                          {d}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                  <td className="p-4 flex justify-center gap-3">
+                    <button
+                      onClick={() => handleDelete(emp.id)}
+                      className="text-red-500 hover:text-red-700 p-1 cursor-pointer transition-colors"
+                      title="Delete"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              {employees.length === 0 && (
+                <tr>
+                  <td
+                    colSpan="5"
+                    className="p-8 text-center text-muted-foreground"
+                  >
+                    No employees found. Add one to get started!
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <AddEmployeeModal
